@@ -5,7 +5,7 @@ import numpy as np
 from scipy import stats
 
 
-if __name__ == '__main__':
+def flip_label():
     average_decrease = []
     total_decrease = 0
     average_decrease_list_dict = {0: [], 1: []}
@@ -46,3 +46,54 @@ if __name__ == '__main__':
     print("total decrease", total_decrease)
     print(average_decrease_list_dict)
     print(stats.ttest_ind(average_decrease_list_dict[0], average_decrease_list_dict[1]))
+
+
+def input_neutral():
+    total_decrease = 0
+    average_decrease_list_dict = {0: [], 1: []}
+    # sentiment_idx_dict = {
+    #     0: [2, 3, 4, 5, 6, 11, 12, 13, 14, 15,
+    #         44, 45, 46, 55,
+    #         66, 67, 68, 69, 70, 71, 72, 78, 80, 81, 82,
+    #         100, 110, 111],
+    #     1: [2, 3, 8,
+    #         36,
+    #         56, 57, 58, 59, 65, 67, 68,
+    #         87, 97],
+    # }
+
+    sentiment_idx_dict = {
+        0: [2, 3, 4, 5, 6, 11, 12, 14,
+            44, 45, 46,
+            67, 70, 72, 78, 80, 81, 82,
+            100, 110, 111],
+        1: [2, 3, 8,
+            36,
+            56, 57, 58, 59, 65, 67, 68,
+            87, 97],
+    }
+    for fn in glob("results/model_gpt2*neutral*.jsonl"):
+        print(fn)
+        with open(fn, 'r') as inf:
+            all_score = defaultdict(list)
+            for p_idx, line in enumerate(inf):
+                data = json.loads(line.strip())
+                # print("="*100)
+                for idx, (t, s) in enumerate(zip(data['tokens'][0], data['attributions'][0])):
+                    if idx in sentiment_idx_dict[p_idx]:
+                        all_score[p_idx].append(s)
+
+        print(all_score)
+        if np.mean(all_score[0]) > np.mean(all_score[1]):
+            total_decrease += 1
+        average_decrease_list_dict[0].append(np.mean(all_score[0]))
+        average_decrease_list_dict[1].append(np.mean(all_score[1]))
+
+    print("total decrease", total_decrease)
+    print(average_decrease_list_dict)
+    print(stats.ttest_ind(average_decrease_list_dict[0], average_decrease_list_dict[1]))
+
+
+if __name__ == '__main__':
+    # flip_label()
+    input_neutral()
