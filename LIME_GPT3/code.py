@@ -74,7 +74,7 @@ with open('demo.txt') as f:
 text = contents
 
 explainer = LimeTextExplainer(class_names=class_names)
-exp = explainer.explain_instance(text, predictor, num_features=20, num_samples=2)
+exp = explainer.explain_instance(text, predictor, num_features=20, num_samples=6)
 fig = exp.as_pyplot_figure()
 exp.save_to_file('oi.html')
 print(exp.as_list())
