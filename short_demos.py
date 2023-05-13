@@ -1,6 +1,5 @@
 # Original demos
-original1 = '''
-Review: straining to get by on humor that is not even as daring as john ritter 's glory days on three 's company . 
+original1 = '''Review: straining to get by on humor that is not even as daring as john ritter 's glory days on three 's company . 
 label: negative
 Review: , serves as a paper skeleton for some very good acting , dialogue , comedy , direction and especially charm . 
 label: positive
