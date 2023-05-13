@@ -94,6 +94,39 @@ def input_neutral():
     print(stats.ttest_ind(average_decrease_list_dict[0], average_decrease_list_dict[1]))
 
 
+def complementary_explanations():
+    more_review = 0
+    average_proportion = []
+
+    review_idx_list = list(range(2, 29)) + list(range(83, 104)) + list(range(151, 174)) + list(range(230, 265))
+    explanation_idx_list = list(range(35, 76)) + list(range(110, 144)) + list(range(271, 310))
+    for fn in glob("results/model_gpt2*explain*.jsonl"):
+        print(fn)
+        with open(fn, 'r') as inf:
+            all_score = defaultdict(list)
+            for p_idx, line in enumerate(inf):
+                if p_idx == 0:
+                    continue
+                data = json.loads(line.strip())
+                print("="*100)
+                for idx, (t, s) in enumerate(zip(data['tokens'][0], data['attributions'][0])):
+
+                    if idx in review_idx_list:
+                        all_score['review'].append(s)
+
+                    if idx in explanation_idx_list:
+                        all_score['exp'].append(s)
+        print(all_score)
+        if np.mean(all_score['review']) > np.mean(all_score['exp']):
+            more_review += 1
+        average_proportion.append(np.mean(all_score['review']) / np.mean(all_score['exp']))
+    #
+    print("more_review", more_review)
+    print(average_proportion)
+    print("review / exp", np.mean(average_proportion))
+
+
 if __name__ == '__main__':
     # flip_label()
-    input_neutral()
+    # input_neutral()
+    complementary_explanations()
