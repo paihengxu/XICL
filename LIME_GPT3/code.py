@@ -2,7 +2,7 @@
 import numpy as np
 import os
 import openai
-openai.api_key = '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'
+openai.api_key = ''
 
 def softmax(x):
     """Compute softmax values for each sets of scores in x."""
