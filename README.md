@@ -1,4 +1,4 @@
-# XICL
+# Towards Understanding In-Context Learning with Contrastive Demonstrations and Saliency Maps
 
 Examples chosen for demo: label flipping, input perturbation, and complementary explanation
 Example indices in the list: 20, 50, 108, 83, 15, 33, 93, 120
